@@ -34,4 +34,12 @@ public class Manufacturer extends Entity {
 
         return productList;
     }
+
+    protected void deleteManufacturer() {
+
+        // to be invoked when this manufacturer object is being deleted
+        for (Product product : productList) {
+            product.deleteManufacturer();
+        }
+    }
 }

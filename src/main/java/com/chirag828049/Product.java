@@ -13,4 +13,9 @@ public class Product extends Entity {
 
         return this.myManufacturer;
     }
+
+    void deleteManufacturer() {
+
+        this.myManufacturer = null;
+    }
 }
