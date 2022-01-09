@@ -17,6 +17,8 @@ public final class App {
     private App() {
     }
 
+    // METHODS RELATED TO MANUFACTURER
+
     private static void addManufacturer(Scanner sc) {
 
         System.out.println("Enter ID and Name of manufacturer to add");
@@ -187,20 +189,28 @@ public final class App {
         System.out.println("Exiting Manufacturer panel.\n");
     }
 
+    // METHODS RELATED TO SHOP
+
     private static void shopPanel(Scanner sc) {
 
         System.out.println("\nWelcome to Shop panel");
     }
+
+    // METHODS RELATED TO PRODUCT
 
     private static void productPanel(Scanner sc) {
 
         System.out.println("\nWelcome to Product panel");
     }
 
+    // METHODS RELATED TO DELIVERY AGENT
+
     private static void deliveryAgentPanel(Scanner sc) {
 
         System.out.println("\nWelcome to Delivery Agent panel");
     }
+
+    // METHODS RELATED TO CUSTOMER
 
     private static void customerPanel(Scanner sc) {
 
