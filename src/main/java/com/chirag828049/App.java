@@ -57,7 +57,7 @@ public final class App {
 
     private static void printManufacturers() {
 
-        System.out.println("Printing list of Entities.");
+        System.out.println("\nPrinting list of Manufacturers.");
         manufacturerList.forEach((manufacturer) -> {
             System.out.println(manufacturer.getID() + " " + manufacturer.getName());
         });
@@ -229,6 +229,80 @@ public final class App {
         }
     }
 
+    private static void printShops() {
+
+        System.out.println("\nPrinting list of Shops.");
+        shopList.forEach((shop) -> {
+            System.out.println(shop.getID() + " " + shop.getName() + " " + shop.getZipCode());
+        });
+    }
+
+    private static void deleteShop(Scanner sc) {
+
+        printShops();
+        System.out.println("\nEnter a Shop ID to delete it.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Shop temp : shopList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                shopList.remove(index);
+            } else
+                System.out.println("Shop ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
+    private static void printProductsOfShop(Scanner sc) {
+
+        printShops();
+        System.out.println("\nEnter a Shop ID to print all its products with quantity available.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Shop temp : shopList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("\nFound " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                shopList.get(index).printAllProducts();
+            } else
+                System.out.println("Shop ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
     private static void shopPanel(Scanner sc) {
 
         int choice = 0;
@@ -239,7 +313,7 @@ public final class App {
             System.out.println("1. Add a shop");
             System.out.println("2. Delete a shop");
             System.out.println("3. Print all shops");
-            System.out.println("4. Print all products of a shop");
+            System.out.println("4. Print all products of a shop with their quantity");
             System.out.println("Enter a choice between 1-4. Enter 5 to go back to main menu.\n\n");
 
             try {
@@ -255,23 +329,23 @@ public final class App {
             switch (choice) {
 
                 case 1:
-                    // Add a manufacturer.
+                    // Add a Shop.
                     addShop(sc);
                     break;
 
                 case 2:
-                    // Delete a manufacturer
-                    deleteManufacturer(sc);
+                    // Delete a shop
+                    deleteShop(sc);
                     break;
 
                 case 3:
-                    // Print all manufacturers.
-                    printManufacturers();
+                    // Print all shops.
+                    printShops();
                     break;
 
                 case 4:
-                    // Print all products of a manufacturer.
-                    printProductsOfManufacturer(sc);
+                    // Print all products available in a shop.
+                    printProductsOfShop(sc);
                     break;
 
                 default:

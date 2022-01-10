@@ -59,4 +59,14 @@ public class Shop extends Entity {
             }
         });
     }
+
+    protected void printAllProducts() {
+
+        System.out.println("\nPrinting all the products of " + this.getName());
+        for (Pair<Product, Integer> product : productList) {
+
+            System.out.println(
+                    product.getValue0().getID() + " " + product.getValue0().getName() + " " + product.getValue1());
+        }
+    }
 }
