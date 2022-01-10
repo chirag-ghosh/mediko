@@ -100,74 +100,26 @@ public final class App {
 
     private static void deleteManufacturer(Scanner sc) {
 
-        printManufacturers();
-        System.out.println("\nEnter a Manufacturer ID to delete it.");
-        try {
+        int index = getManufacturerIndex(sc);
 
-            sc.nextLine();
-            System.out.print("ID : ");
-            int ID = Integer.parseInt(sc.nextLine());
-            boolean isFound = false;
-            int index = -1;
-
-            for (Manufacturer temp : manufacturerList) {
-
-                index++;
-                if (temp.getID() == ID) {
-                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
-                    isFound = true;
-                    break;
-                }
-            }
-
-            if (isFound) {
-                Manufacturer tempManufacturer = manufacturerList.get(index);
-                tempManufacturer.deleteManufacturer();
-                manufacturerList.remove(index);
-            } else
-                System.out.println("Manufacturer ID not found. Please try again.");
-
-        } catch (Exception e) {
-
-            System.out.println("Some error occured. Please try again");
+        if (index != -1) {
+            System.out.println(
+                    "Deleting " + manufacturerList.get(index).getID() + " " + manufacturerList.get(index).getName());
+            manufacturerList.remove(index);
         }
     }
 
     private static void printProductsOfManufacturer(Scanner sc) {
 
-        printManufacturers();
-        System.out.println("\nEnter a Manufacturer ID to print all its products.");
-        try {
+        int index = getManufacturerIndex(sc);
 
-            sc.nextLine();
-            System.out.print("ID : ");
-            int ID = Integer.parseInt(sc.nextLine());
-            boolean isFound = false;
-            int index = -1;
-
-            for (Manufacturer temp : manufacturerList) {
-
-                index++;
-                if (temp.getID() == ID) {
-                    System.out.println("Selecting " + temp.getID() + " " + temp.getName());
-                    isFound = true;
-                    break;
-                }
+        if (index != -1) {
+            Manufacturer tempManufacturer = manufacturerList.get(index);
+            Vector<Product> tempProductList = tempManufacturer.getAllProductsList();
+            System.out.println("\nPrinting all products of " + tempManufacturer.getName());
+            for (Product product : tempProductList) {
+                System.out.println(product.getID() + " " + product.getName());
             }
-
-            if (isFound) {
-                Manufacturer tempManufacturer = manufacturerList.get(index);
-                Vector<Product> tempProductList = tempManufacturer.getAllProductsList();
-                System.out.println("\nPrinting all products of " + tempManufacturer.getName());
-                for (Product product : tempProductList) {
-                    System.out.println(product.getID() + " " + product.getName());
-                }
-            } else
-                System.out.println("Manufacturer ID not found. Please try again.");
-
-        } catch (Exception e) {
-
-            System.out.println("Some error occured. Please try again");
         }
     }
 
