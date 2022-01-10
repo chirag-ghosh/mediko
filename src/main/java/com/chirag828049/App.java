@@ -224,69 +224,60 @@ public final class App {
         });
     }
 
-    private static void deleteShop(Scanner sc) {
+    private static int getShopIndex(Scanner sc) {
 
-        printShops();
-        System.out.println("\nEnter a Shop ID to delete it.");
+        printManufacturers();
+        System.out.println("\nEnter a Manufacturer ID to select it.");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             boolean isFound = false;
             int index = -1;
 
-            for (Shop temp : shopList) {
+            for (Manufacturer temp : manufacturerList) {
 
                 index++;
                 if (temp.getID() == ID) {
-                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
+                    System.out.println("Selected " + temp.getID() + " " + temp.getName());
                     isFound = true;
                     break;
                 }
             }
 
             if (isFound) {
-                shopList.remove(index);
+                return index;
             } else
-                System.out.println("Shop ID not found. Please try again.");
+                System.out.println("Manufacturer ID not found. Please try again.");
 
         } catch (Exception e) {
 
             System.out.println("Some error occured. Please try again");
+            return -1;
         }
+
+        return -1;
+    }
+
+    private static void deleteShop(Scanner sc) {
+
+        int index = getCustomerIndex(sc);
+
+        if (index != -1) {
+
+            shopList.remove(index);
+        }
+
     }
 
     private static void printProductsOfShop(Scanner sc) {
 
-        printShops();
-        System.out.println("\nEnter a Shop ID to print all its products with quantity available.");
-        try {
+        int index = getCustomerIndex(sc);
 
-            sc.nextLine();
-            System.out.print("ID : ");
-            int ID = Integer.parseInt(sc.nextLine());
-            boolean isFound = false;
-            int index = -1;
+        if (index != -1) {
 
-            for (Shop temp : shopList) {
-
-                index++;
-                if (temp.getID() == ID) {
-                    System.out.println("\nFound " + temp.getID() + " " + temp.getName());
-                    isFound = true;
-                    break;
-                }
-            }
-
-            if (isFound) {
-                shopList.get(index).printAllProducts();
-            } else
-                System.out.println("Shop ID not found. Please try again.");
-
-        } catch (Exception e) {
-
-            System.out.println("Some error occured. Please try again");
+            shopList.get(index).printAllProducts();
+            ;
         }
     }
 
