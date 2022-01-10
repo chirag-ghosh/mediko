@@ -531,9 +531,131 @@ public final class App {
 
     // METHODS RELATED TO DELIVERY AGENT
 
+    private static void addDeliveryAgent(Scanner sc) {
+
+        System.out.println("Enter ID, Name and zipcode of delivery agent to add");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            System.out.print("Name : ");
+            String name = sc.nextLine();
+            System.out.print("ZipCode : ");
+            int zipcode = Integer.parseInt(sc.nextLine());
+
+            boolean isPresent = false;
+            for (DeliveryAgent temp : deliveryAgentList) {
+
+                if (temp.getID() == ID) {
+                    System.out.println("Delivery Agent with this ID is already present. Not Added.");
+                    isPresent = true;
+                    break;
+                }
+            }
+
+            if (!isPresent) {
+
+                boolean isAdded = deliveryAgentList.add(new DeliveryAgent(ID, name, zipcode));
+                if (isAdded)
+                    System.out.println("Successfully added delivery agent.");
+                else
+                    System.out.println("Error saving delivery agent. Please try again");
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
+    private static void printDeliveryAgents() {
+
+        System.out.println("\nPrinting list of Delivery Agents.");
+        deliveryAgentList.forEach((deliveryAgent) -> {
+            System.out
+                    .println(deliveryAgent.getID() + " " + deliveryAgent.getName() + " " + deliveryAgent.getZipCode());
+        });
+    }
+
+    private static void deleteDeliveryAgent(Scanner sc) {
+
+        printDeliveryAgents();
+        System.out.println("\nEnter a Delivery Agent ID to delete it.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (DeliveryAgent temp : deliveryAgentList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                deliveryAgentList.remove(index);
+            } else
+                System.out.println("Delivery Agent ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
     private static void deliveryAgentPanel(Scanner sc) {
 
+        int choice = 0;
         System.out.println("\nWelcome to Delivery Agent panel");
+
+        do {
+            System.out.println("\nChoose from the below options.");
+            System.out.println("1. Add a Delivery Agent.");
+            System.out.println("2. Delete a Delivery Agent.");
+            System.out.println("3. Print all Delivery Agents.");
+            System.out.println("Enter a choice between 1-3. Enter 4 to go back to main menu.\n\n");
+
+            try {
+
+                choice = sc.nextInt();
+            } catch (Exception e) {
+
+                sc.nextLine();
+                choice = 0;
+                System.out.println("Invalid choice.\n");
+            }
+
+            switch (choice) {
+
+                case 1:
+                    // Add a product.
+                    addDeliveryAgent(sc);
+                    break;
+
+                case 2:
+                    // Delete a product.
+                    deleteDeliveryAgent(sc);
+                    break;
+
+                case 3:
+                    // Print all products.
+                    printDeliveryAgents();
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice != 4);
+
+        System.out.println("Exiting Delivery Agent panel.\n");
     }
 
     // METHODS RELATED TO CUSTOMER
