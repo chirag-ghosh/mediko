@@ -39,6 +39,25 @@ public class Shop extends Entity {
         }
     }
 
+    protected void deleteProduct(Product existingProduct) {
+
+        boolean isFound = false;
+        int index = -1;
+
+        for (Pair<Product, Integer> temp : productList) {
+
+            index++;
+            if (temp.getValue0().getID() == existingProduct.getID()) {
+                isFound = true;
+                break;
+            }
+        }
+
+        if (isFound) {
+            productList.remove(index);
+        }
+    }
+
     protected int getQuantity(Product existingProduct) {
 
         int quantity[] = { 0 };

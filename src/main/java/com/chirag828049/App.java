@@ -63,6 +63,42 @@ public final class App {
         });
     }
 
+    private static int getManufacturerIndex(Scanner sc) {
+
+        printManufacturers();
+        System.out.println("\nEnter a Manufacturer ID to select it.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Manufacturer temp : manufacturerList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Selected " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                return index;
+            } else
+                System.out.println("Manufacturer ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+            return -1;
+        }
+
+        return -1;
+    }
+
     private static void deleteManufacturer(Scanner sc) {
 
         printManufacturers();
@@ -353,14 +389,144 @@ public final class App {
             }
         } while (choice != 5);
 
-        System.out.println("Exiting Manufacturer panel.\n");
+        System.out.println("Exiting Shop panel.\n");
     }
 
     // METHODS RELATED TO PRODUCT
 
+    private static void addProduct(Scanner sc) {
+
+        System.out.println("Enter ID and Name of product to add");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            System.out.print("Name : ");
+            String name = sc.nextLine();
+
+            boolean isPresent = false;
+            for (Product temp : productList) {
+
+                if (temp.getID() == ID) {
+                    System.out.println("Product with this ID is already present. Not Added.");
+                    isPresent = true;
+                    break;
+                }
+            }
+
+            if (!isPresent) {
+
+                // select a manufacturer for this product
+                int manufacturerIndex = -1;
+                do {
+
+                    manufacturerIndex = getManufacturerIndex(sc);
+                } while (manufacturerIndex != -1);
+
+                boolean isAdded = productList.add(new Product(ID, name, manufacturerList.get(manufacturerIndex)));
+                if (isAdded)
+                    System.out.println("Successfully added product.");
+                else
+                    System.out.println("Error saving product. Please try again");
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
+    private static void printProducts() {
+
+        System.out.println("\nPrinting list of Products.");
+        productList.forEach((product) -> {
+            System.out.println(product.getID() + " " + product.getName() + " " + product.getManufacturer().getName());
+        });
+    }
+
+    private static void deleteProduct(Scanner sc) {
+
+        printProducts();
+        System.out.println("\nEnter a Product ID to delete it.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Product temp : productList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                productList.get(index).getManufacturer().deleteProduct(productList.get(index));
+                for (Shop shop : shopList) {
+                    shop.deleteProduct(productList.get(index));
+                }
+                productList.remove(index);
+            } else
+                System.out.println("Shop ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
     private static void productPanel(Scanner sc) {
 
+        int choice = 0;
         System.out.println("\nWelcome to Product panel");
+
+        do {
+            System.out.println("\nChoose from the below options.");
+            System.out.println("1. Add a product");
+            System.out.println("2. Delete a product");
+            System.out.println("3. Print all products");
+            System.out.println("Enter a choice between 1-3. Enter 4 to go back to main menu.\n\n");
+
+            try {
+
+                choice = sc.nextInt();
+            } catch (Exception e) {
+
+                sc.nextLine();
+                choice = 0;
+                System.out.println("Invalid choice.\n");
+            }
+
+            switch (choice) {
+
+                case 1:
+                    // Add a product.
+                    addProduct(sc);
+                    break;
+
+                case 2:
+                    // Delete a product.
+                    deleteProduct(sc);
+                    break;
+
+                case 3:
+                    // Print all products.
+                    printProducts();
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice != 4);
+
+        System.out.println("Exiting Product panel.\n");
     }
 
     // METHODS RELATED TO DELIVERY AGENT
