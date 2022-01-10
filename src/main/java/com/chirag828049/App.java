@@ -660,9 +660,163 @@ public final class App {
 
     // METHODS RELATED TO CUSTOMER
 
+    private static int getCustomerIndex(Scanner sc) {
+
+        printManufacturers();
+        System.out.println("\nEnter a Customer ID to select it.");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Customer temp : customerList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Selected " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                return index;
+            } else
+                System.out.println("Customer ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+            return -1;
+        }
+
+        return -1;
+    }
+
+    private static void addCustomer(Scanner sc) {
+
+        System.out.println("Enter ID, Name and zipcode of customer to add");
+        try {
+
+            sc.nextLine();
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            System.out.print("Name : ");
+            String name = sc.nextLine();
+            System.out.print("ZipCode : ");
+            int zipcode = Integer.parseInt(sc.nextLine());
+
+            boolean isPresent = false;
+            for (Customer temp : customerList) {
+
+                if (temp.getID() == ID) {
+                    System.out.println("Customer with this ID is already present. Not Added.");
+                    isPresent = true;
+                    break;
+                }
+            }
+
+            if (!isPresent) {
+
+                boolean isAdded = customerList.add(new Customer(ID, name, zipcode));
+                if (isAdded)
+                    System.out.println("Successfully added customer.");
+                else
+                    System.out.println("Error saving customer. Please try again");
+            }
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+        }
+    }
+
+    private static void printCustomers() {
+
+        System.out.println("\nPrinting list of Customers.");
+        customerList.forEach((customer) -> {
+            System.out
+                    .println(customer.getID() + " " + customer.getName() + " " + customer.getZipCode());
+        });
+    }
+
+    private static void deleteCustomer(Scanner sc) {
+
+        int index = getCustomerIndex(sc);
+
+        if (index != -1) {
+            customerList.remove(index);
+        }
+    }
+
+    private static void printPurchasesOfCustomer(Scanner sc) {
+
+        int index = getCustomerIndex(sc);
+
+        if (index != -1) {
+
+            for (Purchase purchase : customerList.get(index).getAllPurchasesList()) {
+
+                System.out.println(
+                        purchase.getID() + " " + purchase.getProduct().getName() + " " + purchase.getQuantity());
+            }
+        }
+    }
+
     private static void customerPanel(Scanner sc) {
 
+        int choice = 0;
         System.out.println("\nWelcome to Customer panel");
+
+        do {
+            System.out.println("\nChoose from the below options.");
+            System.out.println("1. Add a Customer");
+            System.out.println("2. Delete a Customer");
+            System.out.println("3. Print all Customers");
+            System.out.println("4. Print all purchases of a customer");
+            System.out.println("Enter a choice between 1-4. Enter 5 to go back to main menu.\n\n");
+
+            try {
+
+                choice = sc.nextInt();
+            } catch (Exception e) {
+
+                sc.nextLine();
+                choice = 0;
+                System.out.println("Invalid choice.\n");
+            }
+
+            switch (choice) {
+
+                case 1:
+                    // Add a Customer.
+                    addCustomer(sc);
+                    break;
+
+                case 2:
+                    // Delete a Customer
+                    deleteCustomer(sc);
+                    break;
+
+                case 3:
+                    // Print all Customers.
+                    printCustomers();
+                    break;
+
+                case 4:
+                    // Print all purchases of a Customer.
+                    printPurchasesOfCustomer(sc);
+                    break;
+
+                default:
+                    break;
+            }
+        } while (choice != 5);
+
+        System.out.println("Exiting Customer panel.\n");
     }
 
     /**
