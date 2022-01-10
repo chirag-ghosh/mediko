@@ -69,7 +69,6 @@ public final class App {
         System.out.println("\nEnter a Manufacturer ID to select it.");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             boolean isFound = false;
@@ -150,7 +149,7 @@ public final class App {
 
                 index++;
                 if (temp.getID() == ID) {
-                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
+                    System.out.println("Selecting " + temp.getID() + " " + temp.getName());
                     isFound = true;
                     break;
                 }
@@ -422,7 +421,7 @@ public final class App {
                 do {
 
                     manufacturerIndex = getManufacturerIndex(sc);
-                } while (manufacturerIndex != -1);
+                } while (manufacturerIndex == -1);
 
                 boolean isAdded = productList.add(new Product(ID, name, manufacturerList.get(manufacturerIndex)));
                 if (isAdded)

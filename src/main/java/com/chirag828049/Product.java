@@ -7,6 +7,7 @@ public class Product extends Entity {
     protected Product(int ID, String name, Manufacturer myManufacturer) {
         super(ID, name);
         this.myManufacturer = myManufacturer;
+        myManufacturer.addProduct(this);
     }
 
     Manufacturer getManufacturer() {
