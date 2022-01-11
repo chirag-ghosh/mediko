@@ -261,7 +261,7 @@ public final class App {
 
     private static void deleteShop(Scanner sc) {
 
-        int index = getCustomerIndex(sc);
+        int index = getShopIndex(sc);
 
         if (index != -1) {
 
@@ -272,12 +272,11 @@ public final class App {
 
     private static void printProductsOfShop(Scanner sc) {
 
-        int index = getCustomerIndex(sc);
+        int index = getShopIndex(sc);
 
         if (index != -1) {
 
             shopList.get(index).printAllProducts();
-            ;
         }
     }
 
