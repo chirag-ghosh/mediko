@@ -1,5 +1,5 @@
 #build jar file
-mvn package -Djacoco.skip=true
+mvn clean compile assembly:single -Djacoco.skip=true
 
 #run the jar file
-java -jar target/mediko-1.0-SNAPSHOT.jar
+java -jar target/mediko-1.0-SNAPSHOT-jar-with-dependencies.jar

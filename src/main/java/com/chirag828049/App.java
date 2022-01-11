@@ -24,7 +24,6 @@ public final class App {
         System.out.println("Enter ID and Name of manufacturer to add");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             System.out.print("Name : ");
@@ -138,10 +137,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
@@ -183,7 +181,6 @@ public final class App {
         System.out.println("Enter ID, Name and zipcode of shop to add");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             System.out.print("Name : ");
@@ -325,10 +322,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
@@ -375,7 +371,6 @@ public final class App {
         System.out.println("Enter ID and Name of product to add");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             System.out.print("Name : ");
@@ -484,10 +479,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
@@ -524,7 +518,6 @@ public final class App {
         System.out.println("Enter ID, Name and zipcode of delivery agent to add");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             System.out.print("Name : ");
@@ -572,7 +565,6 @@ public final class App {
         System.out.println("\nEnter a Delivery Agent ID to delete it.");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             boolean isFound = false;
@@ -613,10 +605,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
@@ -654,7 +645,6 @@ public final class App {
         System.out.println("\nEnter a Customer ID to select it.");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             boolean isFound = false;
@@ -689,7 +679,6 @@ public final class App {
         System.out.println("Enter ID, Name and zipcode of customer to add");
         try {
 
-            sc.nextLine();
             System.out.print("ID : ");
             int ID = Integer.parseInt(sc.nextLine());
             System.out.print("Name : ");
@@ -769,10 +758,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
@@ -834,10 +822,9 @@ public final class App {
 
             try {
 
-                choice = sc.nextInt();
+                choice = Integer.parseInt(sc.nextLine());
             } catch (Exception e) {
 
-                sc.nextLine();
                 choice = 0;
                 System.out.println("Invalid choice.\n");
             }
