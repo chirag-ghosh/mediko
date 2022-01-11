@@ -226,8 +226,8 @@ public final class App {
 
     private static int getShopIndex(Scanner sc) {
 
-        printManufacturers();
-        System.out.println("\nEnter a Manufacturer ID to select it.");
+        printShops();
+        System.out.println("\nEnter a Shop ID to select it.");
         try {
 
             System.out.print("ID : ");
@@ -235,7 +235,7 @@ public final class App {
             boolean isFound = false;
             int index = -1;
 
-            for (Manufacturer temp : manufacturerList) {
+            for (Shop temp : shopList) {
 
                 index++;
                 if (temp.getID() == ID) {
@@ -248,7 +248,7 @@ public final class App {
             if (isFound) {
                 return index;
             } else
-                System.out.println("Manufacturer ID not found. Please try again.");
+                System.out.println("Shop ID not found. Please try again.");
 
         } catch (Exception e) {
 
@@ -280,6 +280,35 @@ public final class App {
         }
     }
 
+    private static void addProductToShop(Scanner sc) {
+
+        int shopIndex = getShopIndex(sc);
+
+        if (shopIndex != -1) {
+
+            // select product
+            int productIndex = getProductIndex(sc);
+
+            if (productIndex != -1) {
+
+                try {
+
+                    System.out.println("Enter the quantity of product you want to add");
+                    int quantity = Integer.parseInt(sc.nextLine());
+
+                    if (quantity > 0) {
+                        shopList.get(shopIndex).addProduct(productList.get(productIndex), quantity);
+                    } else {
+                        System.out.println("Quantity should be positive");
+                    }
+                } catch (Exception e) {
+
+                    System.out.println("Invalid input.");
+                }
+            }
+        }
+    }
+
     private static void shopPanel(Scanner sc) {
 
         int choice = 0;
@@ -291,7 +320,8 @@ public final class App {
             System.out.println("2. Delete a shop");
             System.out.println("3. Print all shops");
             System.out.println("4. Print all products of a shop with their quantity");
-            System.out.println("Enter a choice between 1-4. Enter 5 to go back to main menu.\n\n");
+            System.out.println("5. Add product to a shop");
+            System.out.println("Enter a choice between 1-5. Enter 6 to go back to main menu.\n\n");
 
             try {
 
@@ -325,10 +355,15 @@ public final class App {
                     printProductsOfShop(sc);
                     break;
 
+                case 5:
+                    // add product to a shop
+                    addProductToShop(sc);
+                    break;
+
                 default:
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
 
         System.out.println("Exiting Shop panel.\n");
     }
@@ -378,6 +413,41 @@ public final class App {
         }
     }
 
+    private static int getProductIndex(Scanner sc) {
+
+        printProducts();
+        System.out.println("\nEnter a Product ID to select it.");
+        try {
+
+            System.out.print("ID : ");
+            int ID = Integer.parseInt(sc.nextLine());
+            boolean isFound = false;
+            int index = -1;
+
+            for (Product temp : productList) {
+
+                index++;
+                if (temp.getID() == ID) {
+                    System.out.println("Selected " + temp.getID() + " " + temp.getName());
+                    isFound = true;
+                    break;
+                }
+            }
+
+            if (isFound) {
+                return index;
+            } else
+                System.out.println("Product ID not found. Please try again.");
+
+        } catch (Exception e) {
+
+            System.out.println("Some error occured. Please try again");
+            return -1;
+        }
+
+        return -1;
+    }
+
     private static void printProducts() {
 
         System.out.println("\nPrinting list of Products.");
@@ -388,38 +458,15 @@ public final class App {
 
     private static void deleteProduct(Scanner sc) {
 
-        printProducts();
-        System.out.println("\nEnter a Product ID to delete it.");
-        try {
+        int index = getProductIndex(sc);
 
-            sc.nextLine();
-            System.out.print("ID : ");
-            int ID = Integer.parseInt(sc.nextLine());
-            boolean isFound = false;
-            int index = -1;
+        if (index != -1) {
 
-            for (Product temp : productList) {
-
-                index++;
-                if (temp.getID() == ID) {
-                    System.out.println("Deleting " + temp.getID() + " " + temp.getName());
-                    isFound = true;
-                    break;
-                }
+            productList.get(index).getManufacturer().deleteProduct(productList.get(index));
+            for (Shop shop : shopList) {
+                shop.deleteProduct(productList.get(index));
             }
-
-            if (isFound) {
-                productList.get(index).getManufacturer().deleteProduct(productList.get(index));
-                for (Shop shop : shopList) {
-                    shop.deleteProduct(productList.get(index));
-                }
-                productList.remove(index);
-            } else
-                System.out.println("Shop ID not found. Please try again.");
-
-        } catch (Exception e) {
-
-            System.out.println("Some error occured. Please try again");
+            productList.remove(index);
         }
     }
 
