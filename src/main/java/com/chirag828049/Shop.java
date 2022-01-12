@@ -79,6 +79,11 @@ public class Shop extends Entity {
         });
     }
 
+    protected Vector<Pair<Product, Integer>> getAllProducts() {
+
+        return productList;
+    }
+
     protected void printAllProducts() {
 
         System.out.println("\nPrinting all the products of " + this.getName());

@@ -743,6 +743,82 @@ public final class App {
         }
     }
 
+    private static void createPurchase(Scanner sc) {
+
+        int customerIndex = getCustomerIndex(sc);
+
+        if (customerIndex != -1) {
+
+            DeliveryAgent selectedDeliveryAgent = null;
+
+            for (DeliveryAgent deliveryAgent : deliveryAgentList) {
+
+                if (deliveryAgent.getZipCode() == customerList.get(customerIndex).getZipCode()) {
+                    if (selectedDeliveryAgent == null
+                            || deliveryAgent.getDeliveryCount() < selectedDeliveryAgent.getDeliveryCount())
+                        selectedDeliveryAgent = deliveryAgent;
+                }
+            }
+
+            if (selectedDeliveryAgent == null) {
+
+                System.out.println("Sorry. No delivery agent in your zipcode.");
+                return;
+            }
+
+            int productIndex = getProductIndex(sc);
+            Product selectedProduct = productList.get(productIndex);
+
+            Shop selectedShop = null;
+
+            for (Shop shop : shopList) {
+
+                if (shop.getQuantity(selectedProduct) > 0) {
+                    if (selectedShop == null
+                            || shop.getQuantity(selectedProduct) > selectedShop.getQuantity(selectedProduct))
+                        selectedShop = shop;
+                }
+            }
+
+            if (selectedShop == null) {
+
+                System.out.println("Sorry. No shop in your locality contains this medicine.");
+                return;
+            }
+
+            int quantity = 0;
+
+            try {
+
+                System.out.println("Enter a positive quantity of " + selectedProduct.getName()
+                        + ". Enter a non-positive to cancel order. Entering anything else selects max available quantity");
+                System.out.println("Enter quantity of " + selectedProduct.getName() + " Max["
+                        + selectedShop.getQuantity(selectedProduct) + "] : ");
+                quantity = Integer.parseInt(sc.nextLine());
+            } catch (Exception e) {
+
+                System.out.println("Invalid response. " + selectedShop.getQuantity(selectedProduct) + " "
+                        + selectedProduct.getName() + " will be shipped");
+            }
+
+            if (quantity <= 0)
+                return;
+
+            if (quantity > selectedShop.getQuantity(selectedProduct)) {
+                quantity = selectedShop.getQuantity(selectedProduct);
+            }
+
+            customerList.get(customerIndex).addPurchase(new Purchase(0, customerList.get(customerIndex),
+                    selectedProduct, quantity, selectedShop, selectedDeliveryAgent));
+            selectedShop.decreaseQuantity(selectedProduct, quantity);
+            selectedDeliveryAgent.addDeliveryCount(quantity);
+
+            System.out.println(
+                    "Purchase ID " + 0 + " : " + quantity + " " + selectedProduct.getName() + " delivered by Agent "
+                            + selectedDeliveryAgent.getName() + " from Shop " + selectedShop.getName());
+        }
+    }
+
     private static void customerPanel(Scanner sc) {
 
         int choice = 0;
@@ -754,7 +830,8 @@ public final class App {
             System.out.println("2. Delete a Customer");
             System.out.println("3. Print all Customers");
             System.out.println("4. Print all purchases of a customer");
-            System.out.println("Enter a choice between 1-4. Enter 5 to go back to main menu.\n\n");
+            System.out.println("5. Create purchase for a customer");
+            System.out.println("Enter a choice between 1-5. Enter 6 to go back to main menu.\n\n");
 
             try {
 
@@ -787,10 +864,15 @@ public final class App {
                     printPurchasesOfCustomer(sc);
                     break;
 
+                case 5:
+                    // Create purchase.
+                    createPurchase(sc);
+                    break;
+
                 default:
                     break;
             }
-        } while (choice != 5);
+        } while (choice != 6);
 
         System.out.println("Exiting Customer panel.\n");
     }
