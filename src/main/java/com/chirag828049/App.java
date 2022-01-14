@@ -14,6 +14,8 @@ public final class App {
     private static Vector<DeliveryAgent> deliveryAgentList = new Vector<DeliveryAgent>();
     private static Vector<Customer> customerList = new Vector<Customer>();
 
+    private static int purchaseID = 1;
+
     private App() {
     }
 
@@ -126,9 +128,19 @@ public final class App {
             Manufacturer tempManufacturer = manufacturerList.get(index);
             Vector<Product> tempProductList = tempManufacturer.getAllProductsList();
             System.out.println("\nPrinting all products of " + tempManufacturer.getName());
-            for (Product product : tempProductList) {
-                System.out.println(product.getID() + " " + product.getName());
-            }
+            System.out.println("+------+-------------------+");
+            tempProductList.forEach((product) -> {
+                System.out.print("|  " + product.getID());
+                for (int i = 0; i < 4 - lengthOfNumber(product.getID()); i++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|    " + product.getName());
+                for (int i = 0; i < 15 - product.getName().length(); i++) {
+                    System.out.print(" ");
+                }
+                System.out.println("|");
+            });
+            System.out.println("+------+-------------------+");
         }
     }
 
@@ -881,7 +893,7 @@ public final class App {
                 quantity = selectedShop.getQuantity(selectedProduct);
             }
 
-            customerList.get(customerIndex).addPurchase(new Purchase(0, customerList.get(customerIndex),
+            customerList.get(customerIndex).addPurchase(new Purchase(purchaseID++, customerList.get(customerIndex),
                     selectedProduct, quantity, selectedShop, selectedDeliveryAgent));
             selectedShop.decreaseQuantity(selectedProduct, quantity);
             selectedDeliveryAgent.addDeliveryCount(quantity);

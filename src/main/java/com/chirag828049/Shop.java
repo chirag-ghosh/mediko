@@ -87,10 +87,35 @@ public class Shop extends Entity {
     protected void printAllProducts() {
 
         System.out.println("\nPrinting all the products of " + this.getName());
+        System.out.println("+------+-------------------+----------+");
+
+        productList.forEach((product) -> {
+            System.out.print("|  " + product.getValue0().getID());
+            for (int i = 0; i < 4 - lengthOfNumber(product.getValue0().getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + product.getValue0().getName());
+            for (int i = 0; i < 15 - product.getValue0().getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|  " + product.getValue1());
+            for (int i = 0; i < 8 - lengthOfNumber(product.getValue1()); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
+        });
+        System.out.println("+------+-------------------+----------+");
         for (Pair<Product, Integer> product : productList) {
 
             System.out.println(
                     product.getValue0().getID() + " " + product.getValue0().getName() + " " + product.getValue1());
         }
+    }
+
+    private int lengthOfNumber(int i) {
+        if (i == 0)
+            return 1;
+        else
+            return (int) Math.log10(i) + 1;
     }
 }
