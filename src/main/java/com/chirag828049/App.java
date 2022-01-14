@@ -57,9 +57,19 @@ public final class App {
     private static void printManufacturers() {
 
         System.out.println("\nPrinting list of Manufacturers.");
+        System.out.println("+------+-------------------+");
         manufacturerList.forEach((manufacturer) -> {
-            System.out.println(manufacturer.getID() + " " + manufacturer.getName());
+            System.out.print("|  " + manufacturer.getID());
+            for (int i = 0; i < 4 - lengthOfNumber(manufacturer.getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + manufacturer.getName());
+            for (int i = 0; i < 15 - manufacturer.getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
         });
+        System.out.println("+------+-------------------+");
     }
 
     private static int getManufacturerIndex(Scanner sc) {
@@ -216,9 +226,25 @@ public final class App {
     private static void printShops() {
 
         System.out.println("\nPrinting list of Shops.");
+        System.out.println("+------+-------------------+----------+");
+
         shopList.forEach((shop) -> {
-            System.out.println(shop.getID() + " " + shop.getName() + " " + shop.getZipCode());
+            System.out.print("|  " + shop.getID());
+            for (int i = 0; i < 4 - lengthOfNumber(shop.getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + shop.getName());
+            for (int i = 0; i < 15 - shop.getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|  " + shop.getZipCode());
+            for (int i = 0; i < 8 - lengthOfNumber(shop.getZipCode()); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
         });
+        System.out.println("+------+-------------------+----------+");
+
     }
 
     private static int getShopIndex(Scanner sc) {
@@ -446,9 +472,26 @@ public final class App {
     private static void printProducts() {
 
         System.out.println("\nPrinting list of Products.");
+        System.out.println("+------+-------------------+-------------------+");
+
         productList.forEach((product) -> {
-            System.out.println(product.getID() + " " + product.getName() + " " + product.getManufacturer().getName());
+
+            System.out.print("|  " + product.getID());
+            for (int i = 0; i < 4 - lengthOfNumber(product.getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + product.getName());
+            for (int i = 0; i < 15 - product.getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + product.getManufacturer().getName());
+            for (int i = 0; i < 15 - product.getManufacturer().getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
         });
+        System.out.println("+------+-------------------+-------------------+");
+
     }
 
     private static void deleteProduct(Scanner sc) {
@@ -553,10 +596,25 @@ public final class App {
     private static void printDeliveryAgents() {
 
         System.out.println("\nPrinting list of Delivery Agents.");
-        deliveryAgentList.forEach((deliveryAgent) -> {
-            System.out
-                    .println(deliveryAgent.getID() + " " + deliveryAgent.getName() + " " + deliveryAgent.getZipCode());
+        System.out.println("+------+-------------------+----------+");
+
+        deliveryAgentList.forEach((agent) -> {
+            System.out.print("|  " + agent.getID());
+            for (int i = 0; i < 4 - lengthOfNumber(agent.getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + agent.getName());
+            for (int i = 0; i < 15 - agent.getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|  " + agent.getZipCode());
+            for (int i = 0; i < 8 - agent.getZipCode(); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
         });
+        System.out.println("+------+-------------------+----------+");
+
     }
 
     private static void deleteDeliveryAgent(Scanner sc) {
@@ -641,7 +699,7 @@ public final class App {
 
     private static int getCustomerIndex(Scanner sc) {
 
-        printManufacturers();
+        printCustomers();
         System.out.println("\nEnter a Customer ID to select it.");
         try {
 
@@ -714,10 +772,25 @@ public final class App {
     private static void printCustomers() {
 
         System.out.println("\nPrinting list of Customers.");
+        System.out.println("+------+-------------------+----------+");
+
         customerList.forEach((customer) -> {
-            System.out
-                    .println(customer.getID() + " " + customer.getName() + " " + customer.getZipCode());
+            System.out.print("|  " + customer.getID());
+            for (int i = 0; i < 4 - lengthOfNumber(customer.getID()); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|    " + customer.getName());
+            for (int i = 0; i < 15 - customer.getName().length(); i++) {
+                System.out.print(" ");
+            }
+            System.out.print("|  " + customer.getZipCode());
+            for (int i = 0; i < 8 - customer.getZipCode(); i++) {
+                System.out.print(" ");
+            }
+            System.out.println("|");
         });
+        System.out.println("+------+-------------------+----------+");
+
     }
 
     private static void deleteCustomer(Scanner sc) {
@@ -875,6 +948,13 @@ public final class App {
         } while (choice != 6);
 
         System.out.println("Exiting Customer panel.\n");
+    }
+
+    public static int lengthOfNumber(int i) {
+        if (i == 0)
+            return 1;
+        else
+            return (int) Math.log10(i) + 1;
     }
 
     /**
