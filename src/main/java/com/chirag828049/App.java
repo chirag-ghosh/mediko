@@ -3,9 +3,6 @@ package com.chirag828049;
 import java.util.Scanner;
 import java.util.Vector;
 
-/**
- * Hello world!
- */
 public final class App {
 
     private static Vector<Manufacturer> manufacturerList = new Vector<Manufacturer>();
@@ -14,7 +11,11 @@ public final class App {
     private static Vector<DeliveryAgent> deliveryAgentList = new Vector<DeliveryAgent>();
     private static Vector<Customer> customerList = new Vector<Customer>();
 
+    // ID for purchases is autogenarated by this static variable
     private static int purchaseID = 1;
+
+    // ID of other entities are given by the user and care is taken that the ID
+    // doesn't previously exist for that type of entity.
 
     private App() {
     }
@@ -116,6 +117,11 @@ public final class App {
         if (index != -1) {
             System.out.println(
                     "Deleting " + manufacturerList.get(index).getID() + " " + manufacturerList.get(index).getName());
+
+            // invoke manufacturer's delete function to nullify its product's manufacturer.
+            manufacturerList.get(index).deleteManufacturer();
+
+            // remove manufacturer from list
             manufacturerList.remove(index);
         }
     }
@@ -144,6 +150,7 @@ public final class App {
         }
     }
 
+    // Panel containing manufacturer specific options.
     private static void manufacturerPanel(Scanner sc) {
 
         int choice = 0;
@@ -326,6 +333,12 @@ public final class App {
 
             if (productIndex != -1) {
 
+                if (productList.get(productIndex).getManufacturer() == null) {
+
+                    System.out.println("The manufacturer of this product is closed. Please try some other product.");
+                    return;
+                }
+
                 try {
 
                     System.out.println("Enter the quantity of product you want to add");
@@ -344,6 +357,7 @@ public final class App {
         }
     }
 
+    // Panel containing shop specific options.
     private static void shopPanel(Scanner sc) {
 
         int choice = 0;
@@ -512,14 +526,20 @@ public final class App {
 
         if (index != -1) {
 
+            // remove product from manufacturer list
             productList.get(index).getManufacturer().deleteProduct(productList.get(index));
+
+            // remove product from all shops
             for (Shop shop : shopList) {
                 shop.deleteProduct(productList.get(index));
             }
+
+            // remove product from product list
             productList.remove(index);
         }
     }
 
+    // Panel containing product specific options.
     private static void productPanel(Scanner sc) {
 
         int choice = 0;
@@ -661,6 +681,7 @@ public final class App {
         }
     }
 
+    // Panel containing delivery agent specific options.
     private static void deliveryAgentPanel(Scanner sc) {
 
         int choice = 0;
@@ -820,6 +841,26 @@ public final class App {
 
         if (index != -1) {
 
+            System.out.println("\nPrinting list of Purchases by " + customerList.get(index).getName());
+            System.out.println("+------+-------------------+----------+");
+
+            customerList.get(index).getAllPurchasesList().forEach((purchase) -> {
+                System.out.print("|  " + purchase.getID());
+                for (int i = 0; i < 4 - lengthOfNumber(purchase.getID()); i++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|    " + purchase.getProduct().getName());
+                for (int i = 0; i < 15 - purchase.getProduct().getName().length(); i++) {
+                    System.out.print(" ");
+                }
+                System.out.print("|  " + purchase.getQuantity());
+                for (int i = 0; i < 8 - purchase.getQuantity(); i++) {
+                    System.out.print(" ");
+                }
+                System.out.println("|");
+            });
+            System.out.println("+------+-------------------+----------+");
+
             for (Purchase purchase : customerList.get(index).getAllPurchasesList()) {
 
                 System.out.println(
@@ -828,6 +869,9 @@ public final class App {
         }
     }
 
+    // Evidently the most important function. the function to create purchase.
+    // Purchase will be automatically processed but therer should be a delivery
+    // agent and shop in your zipcode.
     private static void createPurchase(Scanner sc) {
 
         int customerIndex = getCustomerIndex(sc);
@@ -839,6 +883,8 @@ public final class App {
             for (DeliveryAgent deliveryAgent : deliveryAgentList) {
 
                 if (deliveryAgent.getZipCode() == customerList.get(customerIndex).getZipCode()) {
+
+                    // agent with least deliveries is choosen
                     if (selectedDeliveryAgent == null
                             || deliveryAgent.getDeliveryCount() < selectedDeliveryAgent.getDeliveryCount())
                         selectedDeliveryAgent = deliveryAgent;
@@ -859,6 +905,8 @@ public final class App {
             for (Shop shop : shopList) {
 
                 if (shop.getQuantity(selectedProduct) > 0) {
+
+                    // shop having the highest quantity of that product is choosen.
                     if (selectedShop == null
                             || shop.getQuantity(selectedProduct) > selectedShop.getQuantity(selectedProduct))
                         selectedShop = shop;
@@ -904,6 +952,7 @@ public final class App {
         }
     }
 
+    // Panel containing customer specific options.
     private static void customerPanel(Scanner sc) {
 
         int choice = 0;
@@ -962,6 +1011,8 @@ public final class App {
         System.out.println("Exiting Customer panel.\n");
     }
 
+    // helper function to find the number of digits. Required for designing the
+    // output tables.
     public static int lengthOfNumber(int i) {
         if (i == 0)
             return 1;
@@ -979,6 +1030,7 @@ public final class App {
         // Don't create any more scanner objects. Use this everywhere.
         Scanner sc = new Scanner(System.in);
 
+        // Mian menu. This will then lead to individual panels.
         System.out.println("WELCOME TO MEDIKO SOLUTIONS.");
         System.out.println("Here is a list of roles you can assume. please choose one from the list below.\n\n\n");
 
